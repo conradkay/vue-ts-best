@@ -1,19 +1,84 @@
 {
-  "defaultSeverity": "warning",
   "extends": [
-    "tslint:recommended"
+    "tslint:recommended",
+    "tslint-config-prettier"
   ],
-  "linterOptions": {
-    "exclude": [
-      "node_modules/**"
-    ]
-  },
   "rules": {
-    "quotemark": [true, "single"],
-    "indent": [true, "spaces", 2],
+    "radix": false,
+    "type-literal-delimiter": false,
+    "no-empty": false,
+    "one-line": false,
+    "no-var-requires": false,
+    "no-console": false,
+    "arrow-return-shorthand": [
+      false
+    ],
+    "comment-format": [
+      true,
+      "check-space"
+    ],
+    "import-blacklist": [
+      true,
+      "rxjs"
+    ],
+    "interface-over-type-literal": false,
+    "member-access": false,
+    "newline-before-return": false,
+    "no-any": false,
+    "no-empty-interface": false,
+    "no-import-side-effect": [
+      false
+    ],
+    "no-invalid-this": [
+      true,
+      "check-function-in-method"
+    ],
+    "no-require-imports": false,
+    "no-submodule-imports": false,
+    "no-trailing-whitespace": false,
+    "object-literal-shorthand": true,
+    "object-literal-key-quotes": [
+      true,
+      "as-needed"
+    ],
+    "prefer-template": [
+      true,
+      "allow-single-concat"
+    ],
+    "triple-equals": [
+      true,
+      "allow-null-check"
+    ],
+    "typedef": [
+      true,
+      "parameter",
+      "property-declaration"
+    ],
+    "variable-name": [
+      true,
+      "ban-keywords",
+      "check-format",
+      "allow-pascal-case",
+      "allow-leading-underscore"
+    ],
+    "exclude": [
+      "node_modules/**/*.ts"
+    ],
+    "no-implicit-dependencies": false,
+    "quotemark": [
+      true,
+      "single"
+    ],
+        "indent": [
+          true,
+          "spaces",
+          2
+        ],
     "interface-name": false,
     "ordered-imports": false,
     "object-literal-sort-keys": false,
-    "no-consecutive-blank-lines": false
+    "no-consecutive-blank-lines": false,
+    "trailing-comma": false
+
   }
 }
