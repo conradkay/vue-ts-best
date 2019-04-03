@@ -1,70 +1,30 @@
-<script lang="ts">
+  <script lang="ts">
 import Vue from 'vue'
 import Todos from './components/Todos.vue'
 import AddTodo from './components/AddTodo.vue'
 import uuid from 'uuid'
-import { filters, default as TodoFilters } from './components/TodoFilters.vue'
-import { TTodos, TTodo } from './types/todo'
+import { default as TodoFilters } from './components/TodoFilters.vue'
 import { Component } from 'vue-property-decorator'
-
-export type TFilter = 'all' | 'completed' | 'ongoing'
+import { TFilter, TTodo } from './types/state'
+import { TTodos } from './types/state'
+import { State, Action, Getter } from 'vuex-class'
 
 @Component({
   components: { AddTodo, Todos, TodoFilters }
 })
 class App extends Vue {
-  filters = filters
-  filter: TFilter = 'all'
-  todos: TTodos = {
-    'todo-1': {
-      id: 'todo-1',
-      title: 'Do Groceries (1)',
-      completed: false
-    },
-    'todo-2': {
-      id: 'todo-2',
-      title: 'Believe in Myself (2)',
-      completed: true
-    },
-    'todo-3': {
-      id: 'todo-3',
-      title: 'Probably Tonight (3)',
-      completed: false
-    }
-  }
-
-  createTodo(name: string) {
-    const newId = uuid()
-
-    Vue.set(this.todos, newId, {
-      id: newId,
-      completed: false,
-      title: name
-    })
-  }
-
-  editTodoItem(id: string, newTodo: TTodo) {
-    if (!newTodo) {
-      Vue.delete(this.todos, id)
-    } else {
-      Vue.set(this.todos, id, newTodo)
-      this.todos[id] = newTodo
-    }
-  }
-
-  editFilter(newFilter: TFilter) {
-    console.log(newFilter)
-    this.filter = newFilter
-  }
+  @State('filter')
+  filter!: TFilter
 }
+
 export default App
 </script>
 
 <template>
   <div id="app">
-    <AddTodo @createTodo="createTodo"/>
-    <Todos v-bind:todos="filters[filter](todos)" @editTodoItem="editTodoItem"/>
-    <TodoFilters @changeFilter="editFilter" v-bind:filter="filter"/>
+    <AddTodo/>
+    <Todos v-bind:todos="this.$store.state.todos"/>
+    <TodoFilters v-bind:filter="filter"/>
   </div>
 </template>
 

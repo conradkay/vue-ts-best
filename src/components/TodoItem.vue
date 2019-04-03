@@ -1,11 +1,11 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-import { TTodo } from '../types/todo'
-import { DirectiveBinding } from 'vue/types/options';
+import { DirectiveBinding } from 'vue/types/options'
+import { TTodo } from '@/types/state'
 
 @Component({
   directives: {
-    'todo-focus'(el: HTMLElement, binding: DirectiveBinding) {
+    'todo-focus'(el, binding) {
       if (binding.value) {
         el.focus()
       }
@@ -18,14 +18,16 @@ class TodoItem extends Vue {
   editing = false
 
   todoClick() {
-    this.$emit('editTodo', this.todo.id, {
+    this.$store.commit('editTodo', {
       ...this.todo,
       completed: !this.todo.completed
     })
   }
+
   todoDelete() {
-    this.$emit('editTodo', this.todo.id, undefined)
+    this.$store.commit('deleteTodo', this.todo.id)
   }
+
   editTodo(bool: boolean) {
     this.editing = bool
   }
@@ -76,7 +78,7 @@ export default TodoItem
   </div>
 </template>
 
-<style scoped>
+<style lang="scss">
 .todo-item {
   cursor: pointer !important;
   display: flex;

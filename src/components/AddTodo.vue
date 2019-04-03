@@ -9,9 +9,8 @@ import { Component, Vue, Emit } from 'vue-property-decorator'
 class AddTodo extends Vue {
   message = ''
 
-  @Emit('createTodo')
-  createTodo() {
-    return this.message.trim()
+  addTodo() {
+    this.$store.commit('addTodo', this.message)
   }
 }
 

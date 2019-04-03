@@ -1,23 +1,14 @@
 <script lang="ts">
 import { Vue, Component, Prop } from 'vue-property-decorator'
-
-import { TTodos } from '../types/todo'
-import { TFilter } from '@/App.vue'
-
-export const filters = {
-  all: (todos: TTodos) => Object.values(todos),
-  completed: (todos: TTodos) =>
-    Object.values(todos).filter(todo => todo.completed),
-  ongoing: (todos: TTodos) =>
-    Object.values(todos).filter(todo => !todo.completed)
-}
-
+import { TTodo, TFilter } from '../types/state'
+import { filters } from '@/store/getters';
 @Component
 class TodoFilters extends Vue {
+  filters = filters
   @Prop(String) filter!: string
 
   changeFilter(newFilter: TFilter) {
-    this.$emit('changeFilter', newFilter)
+    this.$store.commit('editFilter', newFilter)
   }
 }
 
