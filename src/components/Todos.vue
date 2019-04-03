@@ -4,21 +4,25 @@
   </div>
 </template>
 
-<script>
-import TodoItem from './TodoItem'
+<script lang="ts">
+import { Vue, Component, Prop, Emit } from 'vue-property-decorator'
 
-export default {
-  name: 'Todos',
+import TodoItem from './TodoItem.vue'
+import { TTodos, TTodo } from '../types/todo'
+@Component({
   components: {
     TodoItem
-  },
-  props: ['todos'],
-  methods: {
-    editTodo(id, newTodo) {
-      this.$emit('editTodoItem', id, newTodo)
-    }
+  }
+})
+class Todos extends Vue {
+  @Prop() todos!: TTodo[]
+
+  editTodo(id: string, newTodo: TTodo) {
+    this.$emit('editTodoItem', id, newTodo)
   }
 }
+
+export default Todos
 </script>
 
 <style scoped>

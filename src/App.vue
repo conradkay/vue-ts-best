@@ -1,27 +1,20 @@
-<template>
-  <div id="app">
-    <AddTodo @createTodo="createTodo" />
-    <Todos v-bind:todos="filters[filter](todos)" @editTodoItem="editTodoItem" />
-    <TodoFilters @changeFilter="editFilter" v-bind:filter="filter" />
-  </div>
-</template>
-
 <script lang="ts">
-import Vue from 'vue';
-import Component from 'vue-class-component';
+import Vue from 'vue'
+import Todos from './components/Todos.vue'
+import AddTodo from './components/AddTodo.vue'
+import uuid from 'uuid'
+import { filters, default as TodoFilters } from './components/TodoFilters.vue'
+import { TTodos, TTodo } from './types/todo'
+import { Component } from 'vue-property-decorator'
 
-import Todos from './components/Todos.vue';
-import AddTodo from './components/AddTodo.vue';
-import uuid from 'uuid';
-import { filters } from './components/TodoFilters.vue';
-import TodoFilters from './components/TodoFilters.vue';
-import { TTodos, TTodo } from './types/todo';
+export type TFilter = 'all' | 'completed' | 'ongoing'
 
-type TFilter = 'all' | 'completed' | 'ongoing';
-
-@Component
+@Component({
+  components: { AddTodo, Todos, TodoFilters }
+})
 class App extends Vue {
-  filter: TFilter = 'all';
+  filters = filters
+  filter: TFilter = 'all'
   todos: TTodos = {
     'todo-1': {
       id: 'todo-1',
@@ -38,36 +31,42 @@ class App extends Vue {
       title: 'Probably Tonight (3)',
       completed: false
     }
-  };
+  }
 
   createTodo(name: string) {
-    const newId = uuid();
+    const newId = uuid()
 
     Vue.set(this.todos, newId, {
       id: newId,
       completed: false,
       title: name
-    });
+    })
   }
 
   editTodoItem(id: string, newTodo: TTodo) {
     if (!newTodo) {
-      Vue.delete(this.todos, id);
+      Vue.delete(this.todos, id)
     } else {
-      Vue.set(this.todos, id, newTodo);
-      this.todos[id] = newTodo;
-      console.log(this.todos);
+      Vue.set(this.todos, id, newTodo)
+      this.todos[id] = newTodo
     }
   }
 
   editFilter(newFilter: TFilter) {
-    console.log(newFilter);
-    this.filter = newFilter;
+    console.log(newFilter)
+    this.filter = newFilter
   }
 }
-
-export default App;
+export default App
 </script>
+
+<template>
+  <div id="app">
+    <AddTodo @createTodo="createTodo"/>
+    <Todos v-bind:todos="filters[filter](todos)" @editTodoItem="editTodoItem"/>
+    <TodoFilters @changeFilter="editFilter" v-bind:filter="filter"/>
+  </div>
+</template>
 
 <style>
 #app {

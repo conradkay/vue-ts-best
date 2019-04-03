@@ -2,20 +2,20 @@
   <input v-model="message" placeholder="Add Todo" class="input" @keyup.enter="addTodo">
 </template>
 
-<script>
-export default {
-  name: 'AddTodo',
-  data: function() {
-    return {
-      message: ''
-    }
-  },
-  methods: {
-    addTodo() {
-      this.$emit('createTodo', this.message.trim())
-    }
+<script lang="ts">
+import { Component, Vue, Emit } from 'vue-property-decorator'
+
+@Component
+class AddTodo extends Vue {
+  message = ''
+
+  @Emit('createTodo')
+  createTodo() {
+    return this.message.trim()
   }
 }
+
+export default AddTodo
 </script>
 
 <style scoped>

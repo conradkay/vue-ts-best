@@ -1,25 +1,27 @@
-<script>
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+
+import { TTodos } from '../types/todo'
+import { TFilter } from '@/App.vue'
+
 export const filters = {
-  all: todos => Object.values(todos),
-  completed: todos => Object.values(todos).filter(todo => todo.completed),
-  ongoing: todos => Object.values(todos).filter(todo => !todo.completed)
+  all: (todos: TTodos) => Object.values(todos),
+  completed: (todos: TTodos) =>
+    Object.values(todos).filter(todo => todo.completed),
+  ongoing: (todos: TTodos) =>
+    Object.values(todos).filter(todo => !todo.completed)
 }
 
-//   @Prop() private msg!: string;
-export default {
-  name: 'TodoFilters',
-  props: ['filter'],
-  data: () => {
-    return {
-      filters
-    }
-  },
-  methods: {
-    changeFilter(newFilter) {
-      this.$emit('changeFilter', newFilter)
-    }
+@Component
+class TodoFilters extends Vue {
+  @Prop(String) filter!: string
+
+  changeFilter(newFilter: TFilter) {
+    this.$emit('changeFilter', newFilter)
   }
 }
+
+export default TodoFilters
 </script>
 
 <template>

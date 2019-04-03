@@ -1,34 +1,37 @@
-<script>
-export default {
-  name: 'TodoItem',
-  props: ['todo'],
-  data: function() {
-    return {
-      editing: false
-    }
-  },
+<script lang="ts">
+import { Vue, Component, Prop } from 'vue-property-decorator'
+import { TTodo } from '../types/todo'
+import { DirectiveBinding } from 'vue/types/options';
+
+@Component({
   directives: {
-    'todo-focus': function(el, binding) {
+    'todo-focus'(el: HTMLElement, binding: DirectiveBinding) {
       if (binding.value) {
         el.focus()
       }
     }
-  },
-  methods: {
-    todoClick() {
-      this.$emit('editTodo', this.todo.id, {
-        ...this.todo,
-        completed: !this.todo.completed
-      })
-    },
-    todoDelete() {
-      this.$emit('editTodo', this.todo.id, undefined)
-    },
-    editTodo: function(bool) {
-      this.editing = bool
-    }
+  }
+})
+class TodoItem extends Vue {
+  @Prop() todo!: TTodo
+
+  editing = false
+
+  todoClick() {
+    this.$emit('editTodo', this.todo.id, {
+      ...this.todo,
+      completed: !this.todo.completed
+    })
+  }
+  todoDelete() {
+    this.$emit('editTodo', this.todo.id, undefined)
+  }
+  editTodo(bool: boolean) {
+    this.editing = bool
   }
 }
+
+export default TodoItem
 </script>
 
 <template>
@@ -43,10 +46,14 @@ export default {
       }"
     />
 
-    <div class="view" v-bind:class="{
+    <div
+      class="view"
+      v-bind:class="{
         disabled: editing
-      }">
-      <label v-on:dblclick="editTodo(true)">{{ todo.title }}</label>
+      }"
+      v-on:dblclick="editTodo(true)"
+    >
+      <label>{{ todo.title }}</label>
     </div>
     <input
       v-bind:class="{
@@ -55,7 +62,8 @@ export default {
       class="edit"
       type="text"
       v-model="todo.title"
-      v-todo-focus="todo == editedTodo"
+      v-todo-focus="editing"
+      @blur="editTodo(false)"
       @keyup.enter="editTodo(false)"
       @keyup.esc="editTodo(false)"
     >
@@ -101,7 +109,13 @@ export default {
   display: none;
 }
 
+.view {
+  flex-grow: 1;
+  user-select: none;
+}
+
 .edit {
+  user-select: none;
   flex-grow: 1;
   margin-right: 8px;
   font-size: 20px;
