@@ -1,4 +1,4 @@
-  <script lang="ts">
+<script lang="ts">
 import Vue from 'vue'
 import Todos from './components/Todos.vue'
 import AddTodo from './components/AddTodo.vue'
